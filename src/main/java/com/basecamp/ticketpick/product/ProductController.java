@@ -7,6 +7,7 @@ import java.net.URI;
 import java.util.Map;
 
 @RestController
+@RequestMapping("/products")
 public class ProductController {
     private final ProductService productService;
 
@@ -14,25 +15,25 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping("/products")
-    public ResponseEntity<String> getAllProduct() {
-        Map<Integer, Product> products = productService.getAllProduct();
+    @GetMapping
+    public ResponseEntity<String> findAllProduct() {
+        Map<Integer, Product> products = productService.findAllProduct();
         if(products.isEmpty()){
             return ResponseEntity.ok("no products.");
         }
         return ResponseEntity.ok(products.toString());
     }
 
-    @GetMapping("/products/{id}")
-    public ResponseEntity<?> getProduct(@PathVariable int id) {
-        Product product = productService.getProduct(id);
+    @GetMapping("/{id}")
+    public ResponseEntity<?> findProduct(@PathVariable int id) {
+        Product product = productService.findProduct(id);
         if(product==null){
             return ResponseEntity.ok("There is not product, id="+id);
         }
         return ResponseEntity.ok(product);
     }
 
-    @PostMapping("/products")
+    @PostMapping
     public ResponseEntity<?> saveProduct(@RequestBody Product product) {
         if(product==null){
             return ResponseEntity.badRequest().body("Request data is null.");
@@ -41,9 +42,9 @@ public class ProductController {
         return ResponseEntity.created(URI.create("/products/"+id)).build();
     }
 
-    @PatchMapping("/products/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<?> updateProduct(@PathVariable int id, @RequestBody ProductRequestDTO productRequestDTO) {
-        Product product = productService.getProduct(id);
+        Product product = productService.findProduct(id);
         if(productRequestDTO==null){
             return ResponseEntity.badRequest().body("Request data is null.");
         }
@@ -54,9 +55,9 @@ public class ProductController {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/products/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteProduct(@PathVariable int id) {
-        Product product = productService.getProduct(id);
+        Product product = productService.findProduct(id);
         if(product==null){
             return ResponseEntity.ok("There is not product, id="+id);
         }
