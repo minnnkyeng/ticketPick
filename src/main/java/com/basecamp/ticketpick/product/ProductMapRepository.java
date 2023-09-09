@@ -3,16 +3,24 @@ package com.basecamp.ticketpick.product;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Repository
 public class ProductMapRepository implements ProductRepository{
     private Map<Integer, Product> db = new HashMap<>();
     private int id = 0;
 
-    public Map<Integer, Product> getAllProduct() { return db; }
+    public List<Product> findAllProduct() {
+        List<Product> products = db.entrySet()
+                .stream()
+                .map(Map.Entry::getValue)
+                .collect(Collectors.toList());
+        return products;
+    }
 
-    public Product getProduct(int id) {
+    public Product findProduct(int id) {
         return db.get(id);
     }
 

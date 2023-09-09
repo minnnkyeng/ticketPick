@@ -2,7 +2,7 @@ package com.basecamp.ticketpick.product;
 
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
+import java.util.List;
 
 @Service
 public class ProductService {
@@ -12,12 +12,12 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public Map<Integer, Product> getAllProduct() {
-        return productRepository.getAllProduct();
+    public List<Product> findAllProduct() {
+        return productRepository.findAllProduct();
     }
 
-    public Product getProduct(int id) {
-        return productRepository.getProduct(id);
+    public Product findProduct(int id) {
+        return productRepository.findProduct(id);
     }
 
     public int saveProduct(Product product) {

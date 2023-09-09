@@ -4,7 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.Map;
+import java.util.List;
 
 @RestController
 @RequestMapping("/products")
@@ -17,7 +17,7 @@ public class ProductController {
 
     @GetMapping
     public ResponseEntity<String> findAllProduct() {
-        Map<Integer, Product> products = productService.findAllProduct();
+        List<Product> products = productService.findAllProduct();
         if(products.isEmpty()){
             return ResponseEntity.ok("no products.");
         }
