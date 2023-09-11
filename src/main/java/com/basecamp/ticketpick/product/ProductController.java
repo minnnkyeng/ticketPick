@@ -1,8 +1,13 @@
 package com.basecamp.ticketpick.product;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+import java.util.List;
+
 @RestController
+@RequestMapping("/products")
 public class ProductController {
     private final ProductService productService;
 
@@ -10,28 +15,56 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping("/products")
-    public String getAllProduct() {
-        return productService.getAllProduct();
+    @GetMapping
+    public ResponseEntity<String> findAllProduct() {
+        List<Product> products = productService.findAllProduct();
+        if(products.isEmpty()){
+            return ResponseEntity.ok("no products.");
+        }
+        return ResponseEntity.ok(products.toString());
     }
 
-    @GetMapping("/products/{id}")
-    public Product getProduct(@PathVariable int id) {
-        return productService.getProduct(id);
+    @GetMapping("/{id}")
+    public ResponseEntity<?> findProduct(@PathVariable int id) {
+        Product product = productService.findProduct(id);
+        if(product==null){
+            return ResponseEntity.ok("There is not product, id="+id);
+        }
+        return ResponseEntity.ok(product);
     }
 
-    @PostMapping("/products")
-    public String saveProduct(@RequestBody Product product) {
-        return productService.saveProduct(product);
+    @PostMapping
+    public ResponseEntity<?> saveProduct(@RequestBody Product product) {
+        if(product==null){
+            return ResponseEntity.badRequest().body("Request data is null.");
+        }
+        int id = productService.saveProduct(product);
+        return ResponseEntity.created(URI.create("/products/"+id)).build();
     }
 
-    @PatchMapping("/products/{id}")
-    public String updateProduct(@RequestBody Product product) {
-        return productService.updateProduct(product);
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> updateProduct(@PathVariable int id, @RequestBody ProductRequestDTO productRequestDTO) {
+        Product product = productService.findProduct(id);
+        if(productRequestDTO==null){
+            return ResponseEntity.badRequest().body("Request data is null.");
+        }
+        if(product==null){
+            return ResponseEntity.badRequest().body("There is not product, id="+id);
+        }
+        productService.updateProduct(product, productRequestDTO);
+        return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/products/{id}")
-    public String deleteProduct(@PathVariable int id) {
-        return productService.deleteProduct(id);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteProduct(@PathVariable int id) {
+        Product product = productService.findProduct(id);
+        if(product==null){
+            return ResponseEntity.ok("There is not product, id="+id);
+        }
+        if(id < 1){
+            return ResponseEntity.badRequest().body("Product id is under 1");
+        }
+        productService.deleteProduct(id);
+        return ResponseEntity.noContent().build();
     }
 }

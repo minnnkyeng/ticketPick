@@ -2,6 +2,8 @@ package com.basecamp.ticketpick.product;
 
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ProductService {
     private final ProductRepository productRepository;
@@ -10,23 +12,38 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public String getAllProduct() {
-        return productRepository.getAllProduct();
+    public List<Product> findAllProduct() {
+        return productRepository.findAllProduct();
     }
 
-    public Product getProduct(int id) {
-        return productRepository.getProduct(id);
+    public Product findProduct(int id) {
+        return productRepository.findProduct(id);
     }
 
-    public String saveProduct(Product product) {
+    public int saveProduct(Product product) {
         return productRepository.saveProduct(product);
     }
 
-    public String updateProduct(Product product) {
-        return productRepository.updateProduct(product);
+    public void updateProduct(Product product, ProductRequestDTO productRequestDTO) {
+        if(productRequestDTO.getName()!=null){
+            product.setName(productRequestDTO.getName());
+        }
+        if(productRequestDTO.getDescription()!=null){
+            product.setDescription(productRequestDTO.getDescription());
+        }
+        if(productRequestDTO.getPrice()<0){
+            product.setPrice(productRequestDTO.getPrice());
+        }
+        if(productRequestDTO.getDate()!=null){
+            product.setDate(productRequestDTO.getDate());
+        }
+        if(productRequestDTO.getVenue()!=null){
+            product.setVenue(productRequestDTO.getVenue());
+        }
+        productRepository.updateProduct(product);
     }
 
-    public String deleteProduct(int id) {
-        return productRepository.deleteProduct(id);
+    public void deleteProduct(int id) {
+        productRepository.deleteProduct(id);
     }
 }
