@@ -1,6 +1,13 @@
 package com.basecamp.ticketpick.product;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "products")
 public class Product {
+    @Id
     private int id;
     private String name;
     private String description;

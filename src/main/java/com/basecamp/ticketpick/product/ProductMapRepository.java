@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@Repository
+
 public class ProductMapRepository implements ProductRepository{
     private Map<Integer, Product> db = new HashMap<>();
     private int id = 0;
