@@ -15,12 +15,12 @@ public class ProductJPARepository implements ProductRepository {
 
     @Override
     public List<Product> findAllProduct() {
-        return null;
+        return entityManager.createQuery("select p from Product p", Product.class).getResultList();
     }
 
     @Override
     public Product findProduct(int id) {
-        return null;
+        return entityManager.find(Product.class, id);
     }
 
     @Override
@@ -31,11 +31,12 @@ public class ProductJPARepository implements ProductRepository {
 
     @Override
     public void updateProduct(Product product) {
-
+        entityManager.merge(product);
     }
 
     @Override
     public void deleteProduct(int id) {
-
+        Product product = entityManager.find(Product.class, id);
+        entityManager.remove(product);
     }
 }
