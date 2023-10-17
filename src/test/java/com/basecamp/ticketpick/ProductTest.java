@@ -1,5 +1,6 @@
 package com.basecamp.ticketpick;
 
+import com.basecamp.ticketpick.category.Category;
 import com.basecamp.ticketpick.product.Product;
 import com.basecamp.ticketpick.product.ProductService;
 import org.junit.jupiter.api.Assertions;
@@ -25,6 +26,10 @@ public class ProductTest {
         product.setPrice(3000000);
         product.setVenue("세종문화회관");
 
+        Category category = new Category();
+        category.setName("뮤지컬");
+        product.setCategory(category);
+
         // when
         int id = productService.saveProduct(product);
 
@@ -43,22 +48,17 @@ public class ProductTest {
         product1.setPrice(3000000);
         product1.setVenue("세종문화회관");
 
-        Product product2 = new Product();
-        product2.setName("캣츠");
-        product2.setDescription("뮤지컬");
-        product2.setDate("2023-10-10");
-        product2.setPrice(3000000);
-        product2.setVenue("세종문화회관");
+        Category category = new Category();
+        category.setName("뮤지컬");
+        product1.setCategory(category);
 
         productService.saveProduct(product1);
-        productService.saveProduct(product2);
 
         // when
         List<Product> products = productService.findAllProduct();
 
         // then
-        Assertions.assertEquals(2, products.size());
-
+        Assertions.assertEquals(1, products.size());
     }
 
     @Test
@@ -70,6 +70,10 @@ public class ProductTest {
         product.setDate("2023-10-10");
         product.setPrice(3000000);
         product.setVenue("세종문화회관");
+
+        Category category = new Category();
+        category.setName("뮤지컬");
+        product.setCategory(category);
 
         productService.saveProduct(product);
 
@@ -89,6 +93,10 @@ public class ProductTest {
         product.setDate("2023-10-10");
         product.setPrice(3000000);
         product.setVenue("세종문화회관");
+
+        Category category = new Category();
+        category.setName("뮤지컬");
+        product.setCategory(category);
 
         int id = productService.saveProduct(product);
 
