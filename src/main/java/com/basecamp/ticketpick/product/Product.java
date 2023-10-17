@@ -1,19 +1,23 @@
 package com.basecamp.ticketpick.product;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.basecamp.ticketpick.category.Category;
+
+import javax.persistence.*;
 
 @Entity
-@Table(name = "products")
+@Table(name="products")
 public class Product {
-    @Id
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
     private String description;
     private int price;
     private String date;
     private String venue;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 
     public Product() {
     }
@@ -22,13 +26,23 @@ public class Product {
         this.id = id;
     }
 
-    public Product(int id, String name, String description, int price, String date, String venue) {
+    public Product(String name, String description, int price, String date, String venue, Category category) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.date = date;
+        this.venue = venue;
+        this.category = category;
+    }
+
+    public Product(int id, String name, String description, int price, String date, String venue, Category category) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
         this.date = date;
         this.venue = venue;
+        this.category = category;
     }
 
     public int getId() {
@@ -79,6 +93,14 @@ public class Product {
         this.venue = venue;
     }
 
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
     @Override
     public String toString() {
         return "Product{" +
@@ -88,6 +110,7 @@ public class Product {
                 ", price=" + price +
                 ", date='" + date + '\'' +
                 ", venue='" + venue + '\'' +
+                ", category=" + category +
                 '}';
     }
 }
