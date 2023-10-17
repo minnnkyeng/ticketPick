@@ -15,7 +15,7 @@ public class Product {
     private String date;
     private String venue;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "category_id")
     private Category category;
 
